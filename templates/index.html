@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glioma Risk Prediction - XAI</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Glioma Risk Prediction with Explainable AI</h1>
+        <p>Upload a CSV file containing patient data for glioma risk prediction and explainability insights.</p>
+
+        <!-- Form to upload CSV file -->
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Upload CSV</label>
+                <input type="file" class="form-control-file" id="file" name="file" accept=".csv" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+
+        {% if tables %}
+            <h3>Prediction Results</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Age at Diagnosis</th>
+                            <th>Gender</th>
+                            <th>Race</th>
+                            <th>Grade</th>
+                            <th>IDH1</th>
+                            <th>TP53</th>
+                            <th>ATRX</th>
+                            <th>PTEN</th>
+                            <th>EGFR</th>
+                            <th>CIC</th>
+                            <th>Risk Prediction</th>
+                            <th>Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in tables.values() %}
+                        <tr>
+                            <td>{{ row['Age_at_diagnosis'] }}</td>
+                            <td>{{ row['Gender'] }}</td>
+                            <td>{{ row['Race'] }}</td>
+                            <td>{{ row['Grade'] }}</td>
+                            <td>{{ row['IDH1'] }}</td>
+                            <td>{{ row['TP53'] }}</td>
+                            <td>{{ row['ATRX'] }}</td>
+                            <td>{{ row['PTEN'] }}</td>
+                            <td>{{ row['EGFR'] }}</td>
+                            <td>{{ row['CIC'] }}</td>
+                            <td>{{ row['Risk Prediction'] }}</td>
+                            <td>{{ row['Risk Level'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        
+        {% if shap_image %}
+            <h3>SHAP Feature Importance</h3>
+            <img src="{{ shap_image }}" alt="SHAP Summary Plot" class="img-fluid">
+        {% endif %}
+
+        {% if accuracy %}
+            <h3>Model Accuracy: {{ accuracy }}</h3>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
