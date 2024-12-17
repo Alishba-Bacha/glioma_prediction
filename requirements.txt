@@ -1,0 +1,9 @@
+Flask
+pandas
+scikit-learn
+shap
+matplotlib
+seaborn
+joblib
+numpy
+Bootstrap-Flask
